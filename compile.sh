@@ -7,7 +7,7 @@ MAIN_FILE="main"
 OUTPUT_FOLDER="out"
 
 # Name der finalen PDF
-FINAL_PDF_NAME="bachelorarbeit_julius_emil_arendt.pdf"
+FINAL_PDF_NAME="musterarbeit_max_mustermann.pdf"
 
 # Definierte Muster für generierte Dateien
 generated_files_patterns=(
