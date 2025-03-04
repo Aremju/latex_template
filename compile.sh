@@ -1,41 +1,45 @@
 #!/bin/bash
 
-# Name of the main file without extension
+# Name der Hauptdatei ohne Endung
 MAIN_FILE="main"
 
-# Folder to store the generated files
+# Ordner für die generierten Dateien
 OUTPUT_FOLDER="out"
 
-# Desired name for the final PDF
-FINAL_PDF_NAME="musterarbeit_max_mustermann.pdf"
+# Name der finalen PDF
+FINAL_PDF_NAME="bachelorarbeit_julius_emil_arendt.pdf"
 
-# Define patterns for generated files
+# Definierte Muster für generierte Dateien
 generated_files_patterns=(
     "*.aux" "*.bbl" "*.blg" "*.log" "*.out" "*.toc" "*.lof" "*.lot"
-    "*.fdb_latexmk" "*.fls" "*.synctex.gz"
+    "*.fdb_latexmk" "*.fls" "*.synctex.gz" "*.glg" "*.glo" "*.gls" "*.ist"
+    "*.glsdefs"
 )
 
-# Clean up all previously generated files in the project directory
-echo "Cleaning up previously generated files..."
+# Alte Dateien entfernen
+echo "Bereinige vorherige generierte Dateien..."
 for pattern in "${generated_files_patterns[@]}"; do
     find . -type f -name "$pattern" -exec rm -f {} + 2>/dev/null
 done
 
-echo "Cleanup complete. Starting build process..."
+echo "Bereinigung abgeschlossen. Starte Build-Prozess..."
 
-# Run the commands to compile the LaTeX document and generate the PDF
+# LaTeX-Dokument kompilieren
 pdflatex $MAIN_FILE.tex
 bibtex $MAIN_FILE.aux
+makeglossaries $MAIN_FILE
 pdflatex $MAIN_FILE.tex
 pdflatex $MAIN_FILE.tex
 
-# Create the output folder if it doesn't already exist
+# Ausgabeordner erstellen
 mkdir -p $OUTPUT_FOLDER
 
-# Move all generated auxiliary files from the root directory
-echo "Moving generated files to '$OUTPUT_FOLDER' folder..."
+# Generierte Dateien in den Ausgabeordner verschieben
+echo "Verschiebe generierte Dateien in '$OUTPUT_FOLDER'..."
 find . -type f \( \
     -name "*.aux" -o \
+    -name "*.glsdefs" -o \
+    -name "*.ist" -o \
     -name "*.bbl" -o \
     -name "*.blg" -o \
     -name "*.log" -o \
@@ -45,14 +49,17 @@ find . -type f \( \
     -name "*.lot" -o \
     -name "*.fdb_latexmk" -o \
     -name "*.fls" -o \
-    -name "*.synctex.gz" \) -exec mv -t $OUTPUT_FOLDER {} + 2>/dev/null
+    -name "*.synctex.gz" -o \
+    -name "*.glg" -o \
+    -name "*.glo" -o \
+    -name "*.gls" \) -exec mv -t $OUTPUT_FOLDER {} + 2>/dev/null
 
-# Rename the generated PDF file
+# PDF umbenennen
 if [ -f "$MAIN_FILE.pdf" ]; then
     mv -f "$MAIN_FILE.pdf" "$FINAL_PDF_NAME"
-    echo "Renamed PDF to '$FINAL_PDF_NAME'."
+    echo "PDF wurde in '$FINAL_PDF_NAME' umbenannt."
 else
-    echo "Error: PDF file '$MAIN_FILE.pdf' not found!"
+    echo "Fehler: PDF-Datei '$MAIN_FILE.pdf' nicht gefunden!"
 fi
 
-echo "Cleanup complete. All auxiliary files are in the '$OUTPUT_FOLDER' folder. Generated PDF: $FINAL_PDF_NAME"
+echo "Build abgeschlossen. Alle Dateien sind in '$OUTPUT_FOLDER'. Generierte PDF: $FINAL_PDF_NAME"

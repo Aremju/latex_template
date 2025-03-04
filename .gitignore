@@ -6,5 +6,13 @@ out/
 **/*.blg
 **/*.bbl
 **/*.aux
-**/*.pdf
+
 **/*.toc
+**/*.ist
+**/*.glsdefs
+**/*.glo
+**/*.glg
+**/*.gls
+
+bachelorarbeit_julius_emil_arendt.pdf
+main.pdf

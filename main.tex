@@ -17,9 +17,25 @@
 \usepackage{verbatim}
 \usepackage{xcolor}
 \usepackage{caption}
+\usepackage[toc]{glossaries}
+\usepackage{cleveref}
+\usepackage{pdfpages}
 
-\renewcommand{\lstlistingname}{Abbildung}
+\crefname{lstlisting}{Text-Abbildung}{Text-Abbildungen}
+
+\Crefname{lstlisting}{Text-Abbildung}{Text-Abbildungen}
+\crefformat{listing}{Text-Abbildung~#2#1#3}
+
+\crefname{figure}{Abbildung}{Abbildungen}
+\Crefname{figure}{Abbildung}{Abbildungen}
+
+\crefname{table}{Tabelle}{Tabellen}
+\Crefname{table}{Tabelle}{Tabellen}
+
+\renewcommand{\lstlistingname}{Text-Abbildung}
 \captionsetup{justification=centering}
+
+\makeglossaries
 
 \geometry{
     a4paper,
@@ -53,6 +69,7 @@
 \date{\today}
 
 \begin{document}
+    \include{src/glossary}
 
     \begin{titlepage}
         \centering
@@ -63,7 +80,7 @@
         Max Mustermann \\
         [0.5em]
         \textbf{Matrikelnummer: } \\
-        1284263 \\
+        4314321 \\
         \vspace{0.5cm}
 
         \textbf{Hochschule: } \\
@@ -75,11 +92,11 @@
 
         \textbf{Erstprüferin: } \\
         Prof.
-        Dr. Dr. rer. nat.
+        Prof.\ Dr. rer.\ nat.
         Martina Musterfrau \\
         [0.5em]
         \textbf{Zweitprüfer:} \\
-        Dipl. Inform. Moritz Mustertyp \\
+        Dipl.\ Inform.\ Moritz Mustertyp \\
         \vspace{0.5cm}
 
         \textbf{Studiengang:} \\
@@ -96,15 +113,20 @@
 
     \end{titlepage}
 
+%    \includepdf[pages=-]{src/eigenstaendigkeitserklaerung_printed.pdf}
     \tableofcontents
 
     \include{src/1_introduction}
     \include{src/2_background}
     \include{src/3_concept}
     \include{src/4_implementation}
-    \include{src/5_conclusion}
+    \include{src/5_evaluation}
+    \include{src/6_conclusion}
+
+    \printglossary
 
     \bibliographystyle{ieeetr}
     \bibliography{main}
 
+    \chapter*{Übersicht verwendeter Hilfsmittel}\label{ch:liste-genutzter-hilfsmittel}
 \end{document}
